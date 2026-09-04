@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Quote | Digital Growth Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="quote">
+  <header class="site-header">
+    <a class="brand" href="index.html">Digital Growth Lab</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="quote.html">Get a Quote</a>
+      <a href="dashboard.html">Measurement Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="section narrow">
+    <p class="eyebrow">PRACTICE CONVERSION FORM</p>
+    <h1>Request a practice quote</h1>
+    <p class="notice">
+      Use fake/sample information only. This project has no backend and does not send the form anywhere.
+    </p>
+
+    <form id="quote-form">
+      <label>
+        Name
+        <input type="text" name="name" placeholder="Test User" required>
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="email" placeholder="test@example.com" required>
+      </label>
+
+      <label>
+        Service
+        <select name="service" id="service-select" required>
+          <option value="">Choose a service</option>
+          <option value="website-development">Website Development</option>
+          <option value="graphic-design">Graphic Design</option>
+          <option value="video-editing">Video Editing</option>
+        </select>
+      </label>
+
+      <label>
+        Project notes
+        <textarea name="notes" rows="5" placeholder="This is only a practice submission."></textarea>
+      </label>
+
+      <button class="button primary" type="submit">Submit Practice Quote</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Digital Growth Lab — free learning project. No real customer data is collected.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
