@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services | Digital Growth Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="services">
+  <header class="site-header">
+    <a class="brand" href="index.html">Digital Growth Lab</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="quote.html">Get a Quote</a>
+      <a href="dashboard.html">Measurement Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="section">
+    <p class="eyebrow">PRACTICE SERVICE CATALOGUE</p>
+    <h1>Choose a service</h1>
+    <p>Clicking a service records a <code>service_click</code> event in our local practice tracker.</p>
+
+    <div class="cards">
+      <article class="card">
+        <h2>Website Development</h2>
+        <p>Static websites and small business sites.</p>
+        <a class="button primary" href="quote.html?service=website-development"
+           data-track="service_click" data-label="website_development">Get a Quote</a>
+      </article>
+
+      <article class="card">
+        <h2>Graphic Design</h2>
+        <p>Social graphics, flyers and brand assets.</p>
+        <a class="button primary" href="quote.html?service=graphic-design"
+           data-track="service_click" data-label="graphic_design">Get a Quote</a>
+      </article>
+
+      <article class="card">
+        <h2>Video Editing</h2>
+        <p>Short-form and long-form video editing.</p>
+        <a class="button primary" href="quote.html?service=video-editing"
+           data-track="service_click" data-label="video_editing">Get a Quote</a>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <p>Digital Growth Lab — free learning project. No real customer data is collected.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
