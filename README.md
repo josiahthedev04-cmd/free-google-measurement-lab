@@ -1,42 +1,222 @@
 # Free Google Measurement Lab
 
-A beginner-friendly portfolio project for learning digital measurement concepts without paying for Google Ads.
+A hands-on digital measurement portfolio project created after completing the Google Ads Measurement Certification.
 
-## What this project does
+## Project Overview
 
-The project uses plain HTML, CSS and JavaScript to create a small lead-generation website.
+The Free Google Measurement Lab is a fully functional practice website built to demonstrate digital measurement concepts without using paid advertising.
 
-It includes a local practice measurement system that records:
+The project was created using HTML, CSS, JavaScript, GitHub Pages, Google Tag Manager and Google Analytics 4.
 
-- page views
-- service clicks
-- form starts
-- completed practice leads
-- UTM campaign source
-- UTM campaign medium
-- UTM campaign name
+The goal was to move beyond simply earning a certification and apply the measurement concepts in a practical environment.
 
-The local tracker uses browser `localStorage`. It is not Google Analytics. It exists so the learner can understand the concepts before connecting free tools such as Google Analytics 4 and Google Tag Manager.
+## Live Website
 
-## Pages
+https://josiahthedev04-cmd.github.io/free-google-measurement-lab/
 
-- `index.html` — home page
-- `services.html` — service catalogue
-- `quote.html` — practice lead form
-- `thank-you.html` — completed conversion page
-- `dashboard.html` — local measurement dashboard
+## Project Objective
 
-## Important privacy note
+The main objective was to build a simple lead-generation funnel and measure how a visitor moves from visiting the website to completing a practice quote request.
 
-Use fake/sample data in the form. This static project has no backend and does not submit the form to a server.
+The website does not process real customer enquiries and no advertising money was spent.
 
-## Next learning stages
+All test activity was generated as controlled portfolio test traffic.
 
-1. Understand events and conversions using the local tracker.
-2. Learn UTM campaign parameters.
-3. Publish the site free with GitHub Pages.
-4. Create a free GA4 property.
-5. Create a free Google Tag Manager container.
-6. Re-create the same events in GTM/GA4.
-7. Compare local test events with GA4 events.
-8. Document the project with screenshots and explanations.
+## Measurement Funnel
+
+The measurement funnel is:
+
+Page View
+→ Service Click
+→ Quote Form Start
+→ Generate Lead
+
+### Events
+
+`page_view`
+
+Records when a visitor views a page.
+
+`service_click`
+
+Records when a visitor selects one of the available services.
+
+`quote_form_start`
+
+Records when a visitor begins interacting with the quote form.
+
+`generate_lead`
+
+Records when the practice quote form is successfully completed.
+
+`generate_lead` represents the primary conversion/key event for the project.
+
+## Technologies Used
+
+- HTML5
+- CSS3
+- JavaScript
+- Google Analytics 4
+- Google Tag Manager
+- Google Tag Assistant
+- GitHub
+- GitHub Pages
+- Chrome Developer Tools
+- UTM Campaign Parameters
+
+## Measurement Architecture
+
+Website
+↓
+JavaScript Event
+↓
+Google Tag Manager Data Layer
+↓
+Custom Event Trigger
+↓
+GA4 Event Tag
+↓
+Google Analytics 4
+
+## Google Tag Manager
+
+Google Tag Manager was installed across the website.
+
+The following custom events were configured and tested:
+
+- `service_click`
+- `quote_form_start`
+- `generate_lead`
+
+Tag Assistant was used to verify that each event successfully triggered its corresponding GA4 event tag.
+
+## Google Analytics 4
+
+A GA4 web property and data stream were configured for the project.
+
+GA4 receives website activity through Google Tag Manager.
+
+Measurement includes:
+
+- Page views
+- Sessions
+- User engagement
+- Form interaction
+- Service interest
+- Lead generation
+
+The `generate_lead` event is used as the main business outcome for the project.
+
+## Campaign Tracking
+
+UTM parameters were used to demonstrate campaign source tracking.
+
+Example:
+
+https://josiahthedev04-cmd.github.io/free-google-measurement-lab/?utm_source=linkedin&utm_medium=social&utm_campaign=portfolio_launch
+
+The project tracks:
+
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
+
+Example sources tested include LinkedIn and Instagram.
+
+## Example Campaign Journey
+
+LinkedIn
+→ Website
+→ Services
+→ Quote Form
+→ Lead
+
+This demonstrates how campaign information can be connected with user actions and conversions.
+
+## Local Measurement Dashboard
+
+A custom JavaScript measurement dashboard was also created before GA4 was implemented.
+
+This was used to understand the fundamentals of event tracking before introducing Google Analytics.
+
+The local dashboard records:
+
+- Page views
+- Service clicks
+- Form starts
+- Practice leads
+- Campaign source
+- Campaign medium
+- Campaign name
+
+Browser localStorage is used only for this practice dashboard.
+
+It is not intended to replace Google Analytics.
+
+## Key Concepts Applied
+
+This project helped me practically understand:
+
+- Digital measurement
+- Events
+- Conversions
+- Key events
+- Lead-generation funnels
+- Google Tag Manager
+- Google Analytics 4
+- Data layers
+- Custom event triggers
+- GA4 event tags
+- Debugging with Tag Assistant
+- UTM campaign tracking
+- Traffic sources
+- Campaign measurement
+- Conversion measurement
+
+## Privacy and Testing
+
+This is an educational portfolio project.
+
+No real advertising campaign was purchased or operated.
+
+No real customer information should be entered into the form.
+
+Testing was performed using sample information and controlled test traffic.
+
+## Certification
+
+This project was developed after completing the Google Ads Measurement Certification.
+
+Rather than using the certification only as a credential, I created this project to apply and better understand the concepts covered during the course.
+
+## What I Learned
+
+The most important lesson from this project was understanding the relationship between a website action and the measurement systems that record it.
+
+For example:
+
+User submits form
+→ Website creates `generate_lead`
+→ Data Layer sends the event
+→ Google Tag Manager detects the event
+→ GA4 event tag fires
+→ Google Analytics receives the event
+
+Building the process helped turn measurement concepts from theory into practical experience.
+
+## Future Improvements
+
+Possible future improvements include:
+
+- Additional campaign source analysis
+- Funnel exploration reports
+- Attribution analysis
+- Looker Studio reporting
+- Additional conversion events
+- More advanced privacy and consent implementation
+
+## Author
+
+Josiah
+
+Google Ads Measurement Certification Portfolio Project
