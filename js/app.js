@@ -9,9 +9,29 @@ function saveEvents(events) {
   localStorage.setItem(EVENT_KEY, JSON.stringify(events));
 }
 
+function pushMeasurementEvent(eventName, details = {}) {
+  // GA4 Enhanced Measurement can already collect form_start automatically,
+  // so we rename our manual version to avoid duplicate GA4 form_start events.
+  const gtmEventName =
+    eventName === "form_start" ? "quote_form_start" : eventName;
+
+  // GA4 already collects normal page_view events through the Google tag,
+  // so we do not manually send page_view again.
+  if (gtmEventName === "page_view") return;
+
+  window.dataLayer = window.dataLayer || [];
+
+  window.dataLayer.push({
+    event: gtmEventName,
+    event_label: details.label || "",
+    page_name: document.body.dataset.page || window.location.pathname
+  });
+}
+
 function trackEvent(eventName, details = {}) {
   const events = getEvents();
-  const page = document.body.dataset.page || window.location.pathname;
+  const page =
+    document.body.dataset.page || window.location.pathname;
 
   events.push({
     event: eventName,
@@ -21,11 +41,20 @@ function trackEvent(eventName, details = {}) {
   });
 
   saveEvents(events);
-  console.log("[Measurement Lab]", eventName, { page, ...details });
+
+  // Keep the local practice dashboard working.
+  console.log("[Measurement Lab]", eventName, {
+    page,
+    ...details
+  });
+
+  // Also send the event into the GTM data layer.
+  pushMeasurementEvent(eventName, details);
 }
 
 function captureCampaign() {
   const params = new URLSearchParams(window.location.search);
+
   const source = params.get("utm_source");
   const medium = params.get("utm_medium");
   const campaign = params.get("utm_campaign");
@@ -36,29 +65,42 @@ function captureCampaign() {
       medium: medium || "unknown",
       campaign: campaign || "unknown"
     };
-    localStorage.setItem(CAMPAIGN_KEY, JSON.stringify(campaignData));
+
+    localStorage.setItem(
+      CAMPAIGN_KEY,
+      JSON.stringify(campaignData)
+    );
   }
 }
 
 function getCampaign() {
   return JSON.parse(
     localStorage.getItem(CAMPAIGN_KEY) ||
-    JSON.stringify({ source: "direct", medium: "none", campaign: "none" })
+      JSON.stringify({
+        source: "direct",
+        medium: "none",
+        campaign: "none"
+      })
   );
 }
 
 function setupTrackedLinks() {
-  document.querySelectorAll("[data-track]").forEach((element) => {
-    element.addEventListener("click", () => {
-      trackEvent(element.dataset.track, {
-        label: element.dataset.label || element.textContent.trim()
+  document
+    .querySelectorAll("[data-track]")
+    .forEach((element) => {
+      element.addEventListener("click", () => {
+        trackEvent(element.dataset.track, {
+          label:
+            element.dataset.label ||
+            element.textContent.trim()
+        });
       });
     });
-  });
 }
 
 function setupQuoteForm() {
   const form = document.getElementById("quote-form");
+
   if (!form) return;
 
   let formStarted = false;
@@ -66,13 +108,22 @@ function setupQuoteForm() {
   form.addEventListener("input", () => {
     if (!formStarted) {
       formStarted = true;
-      trackEvent("form_start", { label: "quote_form" });
+
+      trackEvent("form_start", {
+        label: "quote_form"
+      });
     }
   });
 
-  const params = new URLSearchParams(window.location.search);
-  const requestedService = params.get("service");
-  const serviceSelect = document.getElementById("service-select");
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  const requestedService =
+    params.get("service");
+
+  const serviceSelect =
+    document.getElementById("service-select");
 
   if (requestedService && serviceSelect) {
     serviceSelect.value = requestedService;
@@ -81,59 +132,126 @@ function setupQuoteForm() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const selectedService = serviceSelect?.value || "unknown";
-    trackEvent("generate_lead", { label: selectedService });
+    const selectedService =
+      serviceSelect?.value || "unknown";
 
-    window.location.href = "thank-you.html";
+    trackEvent("generate_lead", {
+      label: selectedService
+    });
+
+    window.location.href =
+      "thank-you.html";
   });
 }
 
 function renderDashboard() {
-  const body = document.getElementById("event-table-body");
+  const body =
+    document.getElementById(
+      "event-table-body"
+    );
+
   if (!body) return;
 
   const events = getEvents();
+
   const counts = {
-    page_view: events.filter(e => e.event === "page_view").length,
-    service_click: events.filter(e => e.event === "service_click").length,
-    form_start: events.filter(e => e.event === "form_start").length,
-    generate_lead: events.filter(e => e.event === "generate_lead").length
+    page_view: events.filter(
+      (e) => e.event === "page_view"
+    ).length,
+
+    service_click: events.filter(
+      (e) => e.event === "service_click"
+    ).length,
+
+    form_start: events.filter(
+      (e) => e.event === "form_start"
+    ).length,
+
+    generate_lead: events.filter(
+      (e) => e.event === "generate_lead"
+    ).length
   };
 
-  document.getElementById("page-view-count").textContent = counts.page_view;
-  document.getElementById("service-click-count").textContent = counts.service_click;
-  document.getElementById("form-start-count").textContent = counts.form_start;
-  document.getElementById("lead-count").textContent = counts.generate_lead;
+  document.getElementById(
+    "page-view-count"
+  ).textContent = counts.page_view;
+
+  document.getElementById(
+    "service-click-count"
+  ).textContent = counts.service_click;
+
+  document.getElementById(
+    "form-start-count"
+  ).textContent = counts.form_start;
+
+  document.getElementById(
+    "lead-count"
+  ).textContent = counts.generate_lead;
 
   const campaign = getCampaign();
-  document.getElementById("campaign-source").textContent = campaign.source;
-  document.getElementById("campaign-medium").textContent = campaign.medium;
-  document.getElementById("campaign-name").textContent = campaign.campaign;
+
+  document.getElementById(
+    "campaign-source"
+  ).textContent = campaign.source;
+
+  document.getElementById(
+    "campaign-medium"
+  ).textContent = campaign.medium;
+
+  document.getElementById(
+    "campaign-name"
+  ).textContent = campaign.campaign;
 
   body.innerHTML = "";
 
-  [...events].reverse().forEach((item) => {
-    const row = document.createElement("tr");
-    const formattedTime = new Date(item.time).toLocaleString();
-    row.innerHTML = `
-      <td>${formattedTime}</td>
-      <td><code>${item.event}</code></td>
-      <td>${item.page}</td>
-      <td>${item.label || "—"}</td>
-    `;
-    body.appendChild(row);
-  });
+  [...events].reverse().forEach(
+    (item) => {
+      const row =
+        document.createElement("tr");
 
-  const clearButton = document.getElementById("clear-events");
-  clearButton?.addEventListener("click", () => {
-    localStorage.removeItem(EVENT_KEY);
-    localStorage.removeItem(CAMPAIGN_KEY);
-    location.reload();
-  });
+      const formattedTime =
+        new Date(
+          item.time
+        ).toLocaleString();
+
+      row.innerHTML = `
+        <td>${formattedTime}</td>
+        <td><code>${item.event}</code></td>
+        <td>${item.page}</td>
+        <td>${item.label || "—"}</td>
+      `;
+
+      body.appendChild(row);
+    }
+  );
+
+  const clearButton =
+    document.getElementById(
+      "clear-events"
+    );
+
+  clearButton?.addEventListener(
+    "click",
+    () => {
+      localStorage.removeItem(
+        EVENT_KEY
+      );
+
+      localStorage.removeItem(
+        CAMPAIGN_KEY
+      );
+
+      location.reload();
+    }
+  );
 }
 
 captureCampaign();
+
 trackEvent("page_view");
+
 setupTrackedLinks();
+
 setupQuoteForm();
+
 renderDashboard();
